@@ -1,0 +1,72 @@
+import org.apache.tools.ant.filters.*
+
+ext.dist = project.hasProperty('dist') ? project.getProperty('dist') : 'dev'
+def filterFile = "$rootDir/filters/$dist-filters.properties"
+ext.applicationHome = file('.').toString().replace("\\", "/");
+
+task filter()  << {
+    description "Process project config files using environment filters"
+    println "Process filters using $filterFile"
+
+    Properties envProperties = new Properties()
+    envProperties.load(new FileInputStream(filterFile))
+    envProperties.load(new FileInputStream("$rootDir/conf/database.properties"))
+    
+    createAppProperties(envProperties)
+    filterConfigFiles()
+
+}
+
+def createAppProperties(envProperties) {
+    println "Creating application.properties file for $dist"
+
+    copy {
+        from "filters"
+        into "config-templates"
+        include "$dist-filters.properties"
+        includeEmptyDirs = false
+        rename { String fileName ->
+            fileName.replace("${dist}-filters", "application")
+        }
+        filter (ReplaceTokens, tokens: [
+            "build.version" : version,
+            "build.timestamp" : buildTimestamp,
+            "build.environment" : dist,
+            "application.home" : applicationHome
+        ])
+        filter(ReplaceTokens, tokens: envProperties)
+    }
+
+}
+
+def filterConfigFiles() {
+    println "Filter config files for $dist"
+
+    Properties appProperties = new Properties()
+    appProperties.load(new FileInputStream("$rootDir/config-templates/application.properties"))
+
+    copy {
+        from "config-templates"
+        into "$rootDir/config"
+        includeEmptyDirs = false
+        filter(ReplaceTokens, tokens: appProperties)
+        filter (ReplaceTokens, tokens: [
+            "driver.portal.home" : rootDir
+        ])
+    }
+    
+    copy {
+		from 'config'		
+		into "$rootDir"
+		includeEmptyDirs = false
+		include '**/myBatisConfig.xml'
+	}
+	
+	 copy {
+		from 'src'		
+		into "$rootDir/config"
+		includeEmptyDirs = false
+		include '**/*.xml'
+	}
+
+}

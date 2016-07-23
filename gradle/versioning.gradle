@@ -1,0 +1,26 @@
+ext.buildTimestamp = new Date().format('yyyy-MM-dd HH:mm:ss')
+ext.buildVersion = project.hasProperty('version.build') ? project.getProperty('version.build') : null
+
+Properties versionProperties = new Properties()
+File versionPropertiesFile = new File("$rootDir/version.properties")
+if(!versionPropertiesFile.canRead())
+	throw new GradleException("Could not read version.properties file.")
+versionProperties.load(versionPropertiesFile.newDataInputStream())
+
+version = setProjectVersion(versionProperties."version.major", versionProperties."version.minor", versionProperties."version.build")
+
+def setProjectVersion(String major, String minor, String build) {
+    String fullVersion = "$major.$minor"
+
+    fullVersion += ".$build"
+
+    println "Method Setting version to $fullVersion"
+    fullVersion
+}
+
+task printVersionProperties << {
+	description 'Shows properties in version.properties file'
+	println "version.major: "+ versionProperties['version.major']
+	println "version.minor: "+ versionProperties['version.minor']
+	println "version.build: "+ versionProperties['version.build']
+}

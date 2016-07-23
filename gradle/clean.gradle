@@ -1,0 +1,9 @@
+
+
+clean {
+    delete "$rootDir/config"
+    delete "$rootDir/reports"
+    delete "$rootDir/config-templates/application.properties"
+    delete "$buildDir"
+    delete "$rootDir/myBatisConfig.xml"
+}

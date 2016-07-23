@@ -1,0 +1,4 @@
+/bin
+/.gradle
+/conf/credentials.properties
+/build/

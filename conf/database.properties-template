@@ -1,0 +1,3 @@
+datasource.username = someValue
+datasource.password = someValue
+datasource.database = someValue

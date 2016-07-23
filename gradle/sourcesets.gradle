@@ -1,0 +1,43 @@
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        output.classesDir "$buildDir/classes/"
+
+        resources {
+            srcDir 'config' //These are the filtered config files
+            include 'application.properties'
+            include 'com/keymane/sqlmaps/**/*.xml'
+            
+            srcDir 'resources'
+			include '**/*.properties'
+			include '**/*.png'
+			include '**/*.gif'
+			include '**/*.jpg'
+			include '**/*.html'
+			include '**/*.js'
+			include '**/*.css'
+        }
+
+        output.resourcesDir "$buildDir/classes/"
+    }
+
+
+    test {
+        java {
+            srcDirs "test"
+        }
+		
+		resources {
+			srcDir 'config'
+			include 'application.properties'
+			
+		}
+        output.classesDir "$buildDir/tests/"
+    }
+}
+
+compileJava {
+    dependsOn filter
+}
