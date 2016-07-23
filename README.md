@@ -1,23 +1,24 @@
-# springboot
+# SpringBoot
 
 My Sample project that uses SpringBoot.
 
-Spring boot is awesome! 
+Spring boot is Awesome!!! 
 - Fewer or no configs
-- Easy to setup (Took me less than one day!) 
+- Easy to setup (Took me less than a day!!) 
 
 The project is a User REST API.
 
 Database - postgreSQL, Mybatis
 
-Installation
+# Installation
 1. Use user.sql to create users table in postgreSQL database.
 
 2. In conf folder use the database.properties-template to create a database.properties file in this folder.
 
 3. In the root folder run 
+```gradle
 	gradlew clean build
-	
+```
 4. Execute the jar file in build/libs 
 			
 			OR
@@ -27,8 +28,9 @@ Installation
 
 
 
-Examples
+# Examples
 
+```json
 /user/add POST
 Request Json
 { 
@@ -64,3 +66,4 @@ Response Json
 
 Response Json
 {"success":true,"messages":{},"errors":{},"data":{"users":[{"id":null,"nationalId":1,"email":"test@test.com","firstName":"test1","lastName":"test1","phoneNumber":"0700111111","password":null,"newPassword":null}]},"targetUrl":null,"httpResponseCode":200,"message":null}
+```
